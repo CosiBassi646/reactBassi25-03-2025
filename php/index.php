@@ -12,6 +12,7 @@ $app->post('/alunni', "AlunniController:create");
 $app->post('/alunni/{id:\d+}', "AlunniController:remove");
 $app->put('/alunni/{id:\d+}', "AlunniController:edit");
 $app->get('/alunni/search/{stringaDaCercare}', "AlunniController:searchParameter"); //search per catalogare la rotta e differenziarla dalle operazioni CRUD
+
 $app->run();
 
 
