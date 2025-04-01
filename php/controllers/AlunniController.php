@@ -15,11 +15,15 @@ class AlunniController
 
   public function show(Request $request, Response $response, $args){ //metodo per ricercare un'alunno tramite id
     $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola'); //credenziali di accessp a php myAdmin
-    $response->getBody()->write($args["id"]);
+    //$response->getBody()->write($args["id"]);
     $result = $mysqli_connection->query("SELECT * FROM alunni WHERE alunni.id = $args[id] ");
     $results = $result->fetch_all(MYSQLI_ASSOC);
-
-    $response->getBody()->write(json_encode($results));
+    
+    if(empty($results)){
+      $response->getBody()->write("NESSUNA CORRISPONDENZA"); //se non trova corrispondenze scrive un messaggio nel body
+    }else{
+      $response->getBody()->write(json_encode($results));
+    }
     return $response;
   }
 
@@ -51,6 +55,22 @@ class AlunniController
 
     return $response->withHeader("Content-Type", "application/json")->withStatus(200);
   }
+
+  public function searchParameter(Request $request, Response $response, $args){ //metodo per ricercare un'alunno per nome/cognome tramite dei caratteri passati in input
+    $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola'); //connessione al DB
+    //$response->getBody()->write($args["stringaDaCercare"]);
+    $result = $mysqli_connection->query("Select * FROM alunni WHERE (alunni.nome LIKE '%$args[stringaDaCercare]%' || alunni.cognome LIKE '%$args[stringaDaCercare]%')");
+    $results = $result->fetch_all(MYSQLI_ASSOC);
+    $response->getBody()->write(json_encode($results));
+    
+    if(empty($results)){
+      $response->getBody()->write("NESSUNA CORRISPONDENZA"); //se non trova corrispondenze scrive un messaggio nel body
+    }else{
+      $response->getBody()->write(json_encode($results));
+    }
+    return $response;
+  }
+
 }
 
 //--PER IL CREATE
