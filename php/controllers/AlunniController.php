@@ -62,13 +62,38 @@ class AlunniController
     $result = $mysqli_connection->query("Select * FROM alunni WHERE (alunni.nome LIKE '%$args[stringaDaCercare]%' || alunni.cognome LIKE '%$args[stringaDaCercare]%')");
     $results = $result->fetch_all(MYSQLI_ASSOC);
     $response->getBody()->write(json_encode($results));
-    
+
     if(empty($results)){
       $response->getBody()->write("NESSUNA CORRISPONDENZA"); //se non trova corrispondenze scrive un messaggio nel body
     }else{
       $response->getBody()->write(json_encode($results));
     }
     return $response;
+  }
+
+  public function sortBy(Request $request, Response $response, $args){ //ordina l'output del server in base ad una colonna della tabella scelta dall'utente
+  $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola'); //connessione al DB
+  $result = $mysqli_connection->query("describe alunni");//restituisce un'array che descrive il database e la struttura delle sue tabelle
+
+  $found = false;
+  
+  $colums = result->fetch_all(MYSQLI_ASSOC);
+  foreach($colums as $col){
+    if($col['Field'] = $args['col']){
+      $found = true;
+      break;
+    }
+  }
+
+  if(!$found){
+    $response->getBody()->write(json_encode("COLONNA NON TROVATA"));
+    return $response->withHeader("Content-Type", "application/json")->withStatus(404);
+  }
+
+  $result = $mysqli_connection->query("SELECT * FROM alunni ORDER BY $args['col'] ASC");//restituisce un'array che descrive il database e la struttura delle sue tabelle
+  $results = $result->fetch_all(MYSQLI_ASSOC);
+  $response->getBody()->write(json_encode($results));
+  return $response->withHeader("Content-Type", "application/json")->withStatus(200);
   }
 
 }
