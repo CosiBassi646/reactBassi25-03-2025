@@ -70,7 +70,8 @@ class AlunniController
     }
     return $response;
   }
-
+  
+/*
   public function sortBy(Request $request, Response $response, $args){ //ordina l'output del server in base ad una colonna della tabella scelta dall'utente
   $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola'); //connessione al DB
   $result = $mysqli_connection->query("describe alunni");//restituisce un'array che descrive il database e la struttura delle sue tabelle
@@ -97,6 +98,7 @@ class AlunniController
   }
 
 }
+*/
 
 //--PER IL CREATE
 //curl -X POST http://localhost:8080/alunni -H "Content-Type: application/json" -d '{"nome": "guido", "cognome": "lauto"}'
