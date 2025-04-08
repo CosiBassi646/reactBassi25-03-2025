@@ -3,6 +3,7 @@ use Slim\Factory\AppFactory;
 
 require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/controllers/AlunniController.php';
+require __DIR__ . '/controllers/CertificazioniController.php';
 
 $app = AppFactory::create();
 
@@ -12,9 +13,14 @@ $app->post('/alunni', "AlunniController:create");
 $app->post('/alunni/{id:\d+}', "AlunniController:remove");
 $app->put('/alunni/{id:\d+}', "AlunniController:edit");
 $app->get('/alunni/search/{stringaDaCercare}', "AlunniController:searchParameter"); //search per catalogare la rotta e differenziarla dalle operazioni CRUD
+
+//rotte per certificazioni
+
+
+$app->get('/alunni/{id:\d+}/certificazioni', "CertificazioniController:index");
+//$app->get('/alunni/{id:\d+}/certificazioni', "CertificazioniController:showCertificazione");
+
 $app->run();
-
-
 //http://localhost:8080/alunni
 
 //CREDENZIALI PHP MYADMIN (porta 81)
