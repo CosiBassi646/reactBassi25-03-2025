@@ -34,7 +34,7 @@ class AlunniController
     $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola');
     $result = $mysqli_connection->query("INSERT INTO `alunni`(`nome`, `cognome`) VALUES ('$nome','$cognome')");
 
-    return $response->withHeader("Content-Type", "application/json")->withStatus(200);
+    return $response->withHeader("Content-Type", "application/json")->withStatus(201);
   }
 
   public function edit(Request $request, Response $response, $args){ //modifica i parametri di un'alunno dato l'id
@@ -81,3 +81,5 @@ class AlunniController
 
 //--PER L'UPDATE
 //curl -X PUT http://localhost:8080/alunni/3 -H "Content-Type: application/json" -d '{"nome": "GUIDO", "cognome": "LAUTO"}'
+
+?>
