@@ -30,9 +30,9 @@ class CertificazioniController
 
     if ($result && $result->num_rows > 0) {
         $results = $result->fetch_all(MYSQLI_ASSOC);
-        $response->getBody()->write(json_encode($results))->withStatus(200);
+        $response->getBody()->write(json_encode($results));
     } else {
-        $response->getBody()->write("NESSUNA CORRISPONDENZA")->withStatus(404);
+        $response->getBody()->write("NESSUNA CORRISPONDENZA");
     }
 
     return $response;
@@ -70,17 +70,18 @@ class CertificazioniController
     $certificazione_id = (int) $args["certificazione_id"];
     $titolo = $body["titolo"];
     $votazione = $body["votazione"];
+    $ente = $body['ente'];
 
     $query = "UPDATE `certificazioni` 
-              SET `titolo` = '$titolo', `votazione` = '$votazione' 
+              SET `titolo` = '$titolo', `votazione` = '$votazione' ,`ente`='$ente'
               WHERE `id` = $certificazione_id AND `alunno_id` = $alunno_id";
 
     $result = $mysqli_connection->query($query);
 
     if ($result) {
-        $response->getBody()->write(json_encode(["esito" => "Certificazione aggiornata"]));
+        $response->getBody()->write(json_encode(["esito" => "AGGIORNAMENTO EFFETTUATO"]));
     } else {
-        $response->getBody()->write(json_encode(["errore" => $mysqli_connection->error]));
+        $response->getBody()->write(json_encode(["errore!"]));
         return $response->withStatus(500);
     }
 
@@ -93,9 +94,9 @@ class CertificazioniController
 //PER AGGIUNGERE UNA CERTIFICAZIONE AL DB
 /*
 curl -X POST http://localhost:8080/alunni/1/certificazioni   -H "Content-Type: application/json"   -d '{
-  "titolo": "ECDL Base",
+  "titolo": "fortnite Base",
   "votazione": "85",
-  "ente": "AICA"
+  "ente": "io"
 }'
 */
 
@@ -106,7 +107,8 @@ curl -X PUT http://localhost:8080/alunni/1/certificazioni/5 \
   -H "Content-Type: application/json" \
   -d '{
     "titolo": "Cambridge B2",
-    "votazione": "89"
+    "votazione": "89",
+    "ente": "meucci" 
   }'
   */
 
